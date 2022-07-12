@@ -8,7 +8,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import dropDown from '../assets/images/dropDown.png';
 
 const DropDown = ({data = [], value = {}, onSelect = () => {}}) => {
-  console.log('selected value', value);
+  // console.log('selected value', value);
   const [showOption, setShowOptions] = useState(false);
 
   const onSelectedItem = val => {

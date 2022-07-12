@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   Text,
   View,
@@ -19,6 +19,7 @@ import {colors} from '../constants';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RadioGroup from 'react-native-radio-buttons-group';
 import {DropDown} from '../Components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const radioButtonsData = [
   {
@@ -74,6 +75,7 @@ let maritalStatus = [
     name: 'Divorced',
   },
 ];
+
 const DressCode = ({label}) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = item => {
@@ -104,6 +106,7 @@ const DressCode = ({label}) => {
     setRadioButtons2(radioButtonsArray);
   }
 
+  const [data, setData] = useState('');
   //TextInput
   const [familyName, setFamilyName] = useState('');
   const [fullName, setFullName] = useState('');
@@ -113,6 +116,60 @@ const DressCode = ({label}) => {
   const [nationalityAtBirth, setNationalityAtBirth] = useState('');
   const [presentNationality, setPresentNationality] = useState('');
   const [describe, setDescribe] = useState('');
+
+  const [loading, setLoading] = useState(false);
+
+  const storeData = async () => {
+    try {
+      await AsyncStorage.setItem(
+        'Data',
+        JSON.stringify({
+          familyName: familyName,
+          fullName: fullName,
+          maidenName: maidenName,
+          dateOfBirth: dateOfBirth,
+          placeOfBirth: placeOfBirth,
+          nationalityAtBirth: nationalityAtBirth,
+          presentNationality: presentNationality,
+          describe: describe,
+        }),
+      );
+      console.log('storeData: ', storeData);
+    } catch (error) {
+      console.error('error saving data....');
+    }
+  };
+
+  const retrieveData = useCallback(async () => {
+    console.log('My mentor Bori', loading);
+    setLoading(true);
+    try {
+      let dataValue = await AsyncStorage.getItem('Data');
+      console.log('Bori is a boss: ', loading);
+      if (dataValue !== null) {
+        dataValue = JSON.parse(dataValue);
+        console.log('get data', dataValue);
+        setData(dataValue);
+
+        setFamilyName(dataValue.familyName);
+        setFullName(dataValue.fullName);
+        setMaidenName(dataValue.maidenName);
+        setDateOfBirth(dataValue.dateOfBirth);
+        setPlaceOfBirth(dataValue.placeOfBirth);
+        setNationalityAtBirth(dataValue.nationalityAtBirth);
+        setPresentNationality(dataValue.presentNationality);
+        console.log('get data', dataValue);
+      }
+      console.log('Hello: ', loading);
+    } catch (error) {
+      console.error('error retrieving data....', error);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    retrieveData();
+  }, [retrieveData]);
 
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
@@ -129,14 +186,11 @@ const DressCode = ({label}) => {
             minimumDate={new Date(1970, 0, 1)}
           />
         )}
-        <View style={styles.header}>
-          <Ionicons name="chevron-back" color="#23557F" size={30} />
-          <Text style={styles.headerText}>Personal History</Text>
-        </View>
         <Text style={styles.instruction}>
           Please kindly fill this document. Signing where required
         </Text>
       </View>
+      {/* {!loading && ( */}
       <ScrollView
         contentContainerStyle={{marginTop: 10}}
         showsVerticalScrollIndicator={false}>
@@ -249,9 +303,10 @@ const DressCode = ({label}) => {
             setVal={setDescribe}
           />
 
-          <Button onPress={getValueofInput1} title="Save me" />
+          <Button onPress={storeData} title="Save me" />
         </View>
       </ScrollView>
+      {/* )} */}
     </SafeAreaView>
   );
 };
@@ -279,7 +334,7 @@ const styles = StyleSheet.create({
   instruction: {
     fontFamily: 'Roboto-Regular',
     fontSize: 13,
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 10,
   },
   pickedDateContainer: {

@@ -201,11 +201,12 @@ const HomeScreen = ({navigation}) => {
                   </View>
                   <View style={{marginLeft: 40}}>
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('SetUp')}>
+                      onPress={() => navigation.navigate('Personal History')}>
                       <Ionicons
                         name="ios-chevron-forward-sharp"
                         size={20}
                         color="#A0A0A0"
+                        onPress={() => navigation.navigate('Personal History')}
                       />
                     </TouchableOpacity>
                   </View>
