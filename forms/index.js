@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
-import DressCode from './dressCode';
+import PersonalHistory from './PersonalHistory';
+import DressCode from './DressCode';
 
-export {DressCode};
+export {PersonalHistory, DressCode};

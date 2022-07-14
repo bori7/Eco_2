@@ -79,22 +79,21 @@ let maritalStatus = [
 export function calculatePercentageDone(dataObject) {
   const data = dataObject;
   console.log('Data: ', data);
-  const keys = Object.keys(dataObject);
-  console.log('Keys: ', keys);
   let vals = Object.values(data);
   vals = vals.filter(val =>
     val === '' || val === undefined || val === null ? false : true,
   );
 
   console.log('Vals: ', vals);
-  if (vals.length !== keys.length) {
-    return Math.round((vals.length / keys.length) * 100);
+  const len = dataObject.length;
+  if (vals.length !== dataObject.length) {
+    return Math.round((vals.length / len) * 100);
   }
 
   return 100;
 }
 
-const PersonalHistory = ({navigation}) => {
+const AdditionalInformation = ({navigation}) => {
   const [toggle, setToggle] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = item => {
@@ -135,7 +134,6 @@ const PersonalHistory = ({navigation}) => {
   const [nationalityAtBirth, setNationalityAtBirth] = useState('');
   const [presentNationality, setPresentNationality] = useState('');
   const [describe, setDescribe] = useState('');
-  const [percentComplete, setPercentComplete] = useState(0);
 
   const [loading, setLoading] = useState(false);
 
@@ -360,7 +358,7 @@ const PersonalHistory = ({navigation}) => {
   );
 };
 
-export default PersonalHistory;
+export default AdditionalInformation;
 const styles = StyleSheet.create({
   SafeAreaViewContainer: {
     flex: 1,

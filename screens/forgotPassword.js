@@ -1,12 +1,51 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TextInput, Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import LoadingOverlay from '../Component/ui/LoadingOverlay';
+import {forgotPassword} from '../util/auth';
 
 const ForgotPassword = () => {
+  const navigation = useNavigation();
+  const [isValidatingEmail, setIsValidatingEmail] = useState(false);
+  const [enteredEmail, setEnteredEmail] = useState('');
+
+  async function forgotHandler() {
+    setIsValidatingEmail(true);
+    console.log('Email:', enteredEmail);
+    let token = '';
+    try {
+      token = await forgotPassword(enteredEmail);
+      console.log(token);
+      navigation.navigate('Log In');
+    } catch (error) {
+      console.error('erorr', error);
+      Alert.alert('Password cannot be reset try again later');
+    } finally {
+      setIsValidatingEmail(false);
+    }
+  }
+  if (isValidatingEmail) {
+    return <LoadingOverlay message="hold on..." />;
+  }
+
+  function updateInputValueHandler(inputType, enteredValue) {
+    switch (inputType) {
+      case 'email':
+        setEnteredEmail(enteredValue);
+        break;
+    }
+  }
+
   return (
     <View style={styles.container}>
-      <Ionicons name="chevron-back-sharp" size={24} color="#4385B7" />
+      <Ionicons
+        name="chevron-back-sharp"
+        size={24}
+        color="#4385B7"
+        onPress={() => navigation.navigate('Log In')}
+      />
       <Text style={styles.paragraph}>Forgot Password</Text>
       <Text style={styles.subtitle}>
         Enter your email to reset your password
@@ -16,9 +55,17 @@ const ForgotPassword = () => {
         style={styles.textInput}
         placeholderTextColor="#A0A0A0"
         placeholder="e.g micheal@gmail.com"
+        onChangeText={updateInputValueHandler.bind(this, 'email')}
+        value={enteredEmail}
       />
-      <Text style={styles.resetPW}>Reset Password</Text>
-      <Text style={styles.goBack}>Go back</Text>
+
+      <Text style={styles.resetPW} onPress={forgotHandler}>
+        Reset Password
+      </Text>
+
+      <Text style={styles.goBack} onPress={() => navigation.navigate('Log In')}>
+        Go back
+      </Text>
     </View>
   );
 };
@@ -28,7 +75,7 @@ export default ForgotPassword;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ecf0f1',
+    backgroundColor: '#fff',
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 90,

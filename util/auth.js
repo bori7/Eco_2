@@ -24,3 +24,19 @@ export function createUser(email, password) {
 export function login(email, password) {
   return authenticate('signInWithPassword', email, password);
 }
+
+export async function forgotPassword(email) {
+  const response = await axios.post(
+    'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=' +
+      API_KEY,
+    {
+      email: email,
+      requestType: 'PASSWORD_RESET',
+    },
+  );
+
+  const token = response.data.email;
+
+  console.log(response.data);
+  return token;
+}

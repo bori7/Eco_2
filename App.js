@@ -1,99 +1,103 @@
 /* eslint-disable prettier/prettier */
+import 'react-native-gesture-handler';
 import React, {useContext, useEffect, useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {Image, StatusBar} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import images from './constants';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import {
-  SetUp,
   GetStarted,
-  OnboardingScreen,
   LicenseAgreement,
   ForgotPassword,
   ModalO,
   HomeScreen,
 } from './screens';
 import WelcomeScreen from './screen/WelcomeScreen';
+import OnboardingScreen from './screen/OnboardingScreen';
 
-import {DressCode} from './forms';
+import {PersonalHistory, DressCode} from './forms';
 import AuthForm from './Component/AuthForm';
 import {colors} from './constants';
 import LoginScreen from './screen/LoginScreen';
 import SignupScreen from './screen/SignupScreen';
 import AuthContextProvider, {AuthContext} from './store/auth-context';
-import IconButton from './Component/ui/IconButton';
 
 const Stack = createNativeStackNavigator();
 
+const Drawer = createDrawerNavigator();
+
 function AuthStack() {
+  const [isAppFirstLaunched, setIsAppFirstLaunched] = useState(null);
+
+  useEffect(() => {
+    async function isFirstLaunch() {
+      const appData = await AsyncStorage.getItem('isAppFirstLaunced');
+      console.log(appData);
+      if (appData == null) {
+        setIsAppFirstLaunched(true);
+        AsyncStorage.setItem('isAppFirstLaunched', 'false');
+      } else {
+        setIsAppFirstLaunched(false);
+      }
+    }
+    isFirstLaunch();
+  }, []);
+
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: colors.white,
-          headerTintColor: 'white',
-          contentStyle: {backgroundColor: colors.white},
-        },
-      }}>
-      <Stack.Screen name="Log In" component={LoginScreen} />
-      <Stack.Screen name="Sign Up" component={SignupScreen} />
-    </Stack.Navigator>
+    isAppFirstLaunched != null && (
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        {isAppFirstLaunched && (
+          <Stack.Screen name="GetStarted" component={GetStarted} />
+        )}
+        <Stack.Screen name="Log In" component={LoginScreen} />
+        <Stack.Screen name="Sign Up" component={SignupScreen} />
+        <Stack.Screen name="Forgot Password" component={ForgotPassword} />
+      </Stack.Navigator>
+    )
   );
 }
 
 function AuthenticatedStack() {
+  const [isAppFirstLaunched, setIsAppFirstLaunched] = useState(null);
+
+  useEffect(() => {
+    async function isFirstLaunch() {
+      const appData = await AsyncStorage.getItem('isAppFirstLaunced');
+      if (appData == null) {
+        setIsAppFirstLaunched(true);
+        AsyncStorage.setItem('isAppFirstLaunched', 'false');
+      } else {
+        setIsAppFirstLaunched(false);
+      }
+    }
+    isFirstLaunch();
+  }, []);
+
+  // function drawerNavigation(){
+  //   <Drawer.Navigator>
+  // }
+
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: colors.grey,
-        },
-        headerTintColor: colors.blue,
-        headerTitleStyle: {
-          fontFamily: 'Roboto-Bold',
-          fontSize: 20,
-        },
-        contentStyle: {
-          backgroundColor: colors.red,
-        },
-      }}>
-      <Stack.Screen
-        name="Welcome Screen"
-        component={HomeScreen}
-        options={({navigation}) => ({
-          headerLeft: ({tintColor}) => (
-            <IconButton
-              icon="menu"
-              color="#23557F"
-              size={30}
-              onPress={() => navigation.navigate('Home')}
-            />
-          ),
-          headerRight: ({tintColor}) => (
-            <Image
-              source={require('./assets/images/profilePhoto.png')}
-              onPress={() => navigation.navigate('Personal History')}
-            />
-          ),
-        })}
-      />
-      <Stack.Screen
-        name="Personal History"
-        component={DressCode}
-        options={({navigation}) => ({
-          headerLeft: ({tintColor}) => (
-            <IconButton
-              icon="chevron-back"
-              color="#23557F"
-              size={30}
-              onPress={() => navigation.navigate('Home')}
-            />
-          ),
-        })}
-      />
-    </Stack.Navigator>
+    isAppFirstLaunched != null && (
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+        {isAppFirstLaunched && (
+          <Stack.Screen name="Ecobank Policy" component={LicenseAgreement} />
+        )}
+
+        <Stack.Screen name="Welcome Screen" component={HomeScreen} />
+        <Stack.Screen name="Dress Code" component={DressCode} />
+        <Stack.Screen name="Personal History" component={PersonalHistory} />
+      </Stack.Navigator>
+    )
   );
 }
 function Navigation() {
@@ -133,7 +137,7 @@ function Root() {
   return <Navigation />;
 }
 
-const App = () => {
+const App = ({navigation}) => {
   return (
     <>
       <StatusBar barStyle="light-content" />

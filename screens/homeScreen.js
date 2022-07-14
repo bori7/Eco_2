@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -17,130 +17,153 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import ModalO from './modal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({navigation}) => {
+  const [userData, setUserData] = useState(null);
+
+  const retrieveData = async () => {
+    let dataValue = await AsyncStorage.getItem('Data');
+    dataValue = JSON.parse(dataValue);
+    setUserData(dataValue);
+    // return dataValue;
+    console.log(dataValue);
+    /*console.log('get Value', dataValue);*/
+  };
+
+  useEffect(() => {
+    retrieveData();
+    // console.log(data);
+  }, []);
+
   const [toggle, setToggle] = useState(false);
   const [toggle2, setToggle2] = useState(false);
   const [toggle3, setToggle3] = useState(false);
   return (
     <SafeAreaView style={styles.SafeAreaViewContainer}>
-      <View style={styles.headerContainer}>
-        <Icon name="menu" size={24} color="#4385B7" />
-        <View style={styles.headerTxtWelcome}>
-          <Text style={styles.headerWelcome}>Welcome Abose</Text>
-          <Text style={styles.subHeaderWelcome}>Mayowa17355@gmail.com</Text>
-        </View>
-        <Image
-          source={images.profile_photo}
-          style={styles.profilePhoto}
-          resizeMode="contain"
-        />
-      </View>
-
-      {/* CONGRATULATIONS */}
-      <View style={styles.congratsContainer}>
-        <Image
-          source={images.congrats}
-          style={styles.logoCongrats}
-          resizeMode="contain"
-        />
-        <View>
-          <View style={styles.congratsTxtContainer}>
-            <Text style={styles.congratsTxt}>Congratulations!</Text>
-            <Text style={styles.onboardingStage}>
-              Your Onboarding is
-              <Text style={{color: colors.blue}}> 10% complete</Text>
-            </Text>
-            <TouchableOpacity style={styles.playMeet}>
-              <FontAwesome name="play-circle" size={20} color="#B9D318" />
-              <Text style={{color: colors.blue}}>Meet the team</Text>
-            </TouchableOpacity>
+      {/* <ModalO /> */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        alwaysBounceVertical={false}
+        bounces={false}>
+        <View style={styles.headerContainer}>
+          <Icon name="menu" size={24} color="#4385B7" />
+          <View style={styles.headerTxtWelcome}>
+            <Text style={styles.headerWelcome}>Welcome Abose</Text>
+            <Text style={styles.subHeaderWelcome}>Mayowa17355@gmail.com</Text>
           </View>
+          <Image
+            source={images.profile_photo}
+            style={styles.profilePhoto}
+            resizeMode="contain"
+          />
         </View>
-      </View>
 
-      {/* Id Card  */}
-      <View style={styles.idCardContainer}>
-        <View style={styles.idCardTxtContainer}>
+        {/* CONGRATULATIONS */}
+        <View style={styles.congratsContainer}>
+          <Image
+            source={images.congrats}
+            style={styles.logoCongrats}
+            resizeMode="contain"
+          />
           <View>
-            <Text style={{color: colors.white}}>Name: </Text>
-            <Text style={styles.IdCardTxt}>Surname: </Text>
-            <Text style={styles.IdCardTxt}>Staff Number: </Text>
-            <Text style={styles.IdCardTxt}>Signature: </Text>
+            <View style={styles.congratsTxtContainer}>
+              <Text style={styles.congratsTxt}>Congratulations!</Text>
+              <Text style={styles.onboardingStage}>
+                Your Onboarding is
+                <Text style={{color: colors.blue}}> 10% complete</Text>
+              </Text>
+              <TouchableOpacity style={styles.playMeet}>
+                <FontAwesome name="play-circle" size={20} color="#B9D318" />
+                <Text style={{color: colors.blue}}>Meet the team</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.idCard}>
-            <Icon name="image" size={30} color="#EFEFEF" />
-          </View>
-        </View>
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            marginTop: 20,
-          }}>
-          <View style={styles.sampleContainer}>
-            <Icon name="alert-circle" color={colors.white} size={10} />
-            <Text style={styles.sampleTXT}>
-              This is just a sample of your ID
-            </Text>
-          </View>
-          <Image source={images.eco_Logo} style={styles.ecobankLogo} />
-        </View>
-      </View>
-
-      {/* toggle */}
-      <View style={styles.toggleOnboard}>
-        {/* Onboarding */}
-        <View style={styles.onBoard}>
-          <View style={styles.rocket}>
-            <Image
-              source={images.rocketIcon}
-              style={{width: 30, height: 30}}
-              resizeMode="contain"
-            />
-          </View>
-          <Text style={styles.onBoardTxt}>Onboarding</Text>
         </View>
 
-        {/* post onboarding */}
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginLeft: 5,
-            width: 175,
-          }}>
+        {/* Id Card  */}
+        <View style={styles.idCardContainer}>
+          <View style={styles.idCardTxtContainer}>
+            <View>
+              <Text style={{color: colors.white}}>Name: </Text>
+              <Text style={styles.IdCardTxt}>Surname: </Text>
+              <Text style={styles.IdCardTxt}>Staff Number: </Text>
+              <Text style={styles.IdCardTxt}>Signature: </Text>
+            </View>
+            <View style={styles.idCard}>
+              <Icon name="image" size={30} color="#EFEFEF" />
+            </View>
+          </View>
           <View
             style={{
-              backgroundColor: '#f1f1f1',
-              width: 32,
-              height: 32,
-              borderRadius: 32 / 2,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginRight: 5,
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: 20,
             }}>
-            <FontAwesome5 name="socks" size={20} color="#D3D3D3" />
+            <View style={styles.sampleContainer}>
+              <Icon name="alert-circle" color={colors.white} size={10} />
+              <Text style={styles.sampleTXT}>
+                This is just a sample of your ID
+              </Text>
+            </View>
+            <Image source={images.eco_Logo} style={styles.ecobankLogo} />
+          </View>
+        </View>
+
+        {/* toggle */}
+        <View style={styles.toggleOnboard}>
+          {/* Onboarding */}
+          <View style={styles.onBoard}>
+            <View style={styles.rocket}>
+              <Image
+                source={images.rocketIcon}
+                style={{width: 30, height: 30}}
+                resizeMode="contain"
+              />
+            </View>
+            <Text style={styles.onBoardTxt}>Onboarding</Text>
           </View>
 
-          <Text
+          {/* post onboarding */}
+          <View
             style={{
-              fontSize: 15,
-              color: '#656565',
-              opacity: 0.3,
-              fontFamily: 'Lato-Regular',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginLeft: 5,
+              width: 175,
             }}>
-            Post Onboarding
-          </Text>
+            <View
+              style={{
+                backgroundColor: '#f1f1f1',
+                width: 32,
+                height: 32,
+                borderRadius: 32 / 2,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: 5,
+              }}>
+              <FontAwesome5 name="socks" size={20} color="#D3D3D3" />
+            </View>
+
+            <Text
+              style={{
+                fontSize: 15,
+                color: '#656565',
+                opacity: 0.3,
+                fontFamily: 'Lato-Regular',
+              }}>
+              Post Onboarding
+            </Text>
+          </View>
         </View>
-      </View>
-      <ScrollView>
+
         {/* Progress Bar */}
         <View style={styles.progressContainer}>
           <View style={styles.progressBar}>
             <View style={styles.progressIndicator}>
               <CircularProgress
-                value={70}
+                value={userData?.percentageComplete}
                 radius={30}
                 progressValueColor={'#B9D318'}
               />
@@ -318,8 +341,7 @@ const HomeScreen = ({navigation}) => {
                 <View style={{flexDirection: 'row'}}>
                   <View style={styles.borderSub}>
                     <Text style={styles.subTxt}>
-                      Input the details for your personal details, address,{' '}
-                      {'\n'}
+                      Input the details for your Dress code, address, {'\n'}
                       employment history
                     </Text>
                   </View>
@@ -353,9 +375,9 @@ const HomeScreen = ({navigation}) => {
               {/* Personal Details */}
               <View style={styles.dropdownContent}>
                 <View>
-                  <Text style={styles.headTxtDropdown}>Personal Details</Text>
+                  <Text style={styles.headTxtDropdown}>Dress Code</Text>
                   <Text style={styles.subTxtDropdown}>
-                    Name, Surname, Date of birth
+                    Policy Statement, Philosophy and
                   </Text>
                 </View>
                 <View
@@ -371,6 +393,7 @@ const HomeScreen = ({navigation}) => {
                       name="ios-chevron-forward-sharp"
                       size={20}
                       color="#A0A0A0"
+                      onPress={() => navigation.navigate('Dress Code')}
                     />
                   </View>
                 </View>

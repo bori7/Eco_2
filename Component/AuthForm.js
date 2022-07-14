@@ -11,13 +11,16 @@ import {
   Platform,
   ScrollView,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 
 import Input from './Input';
 import {CustomButton} from '../Components';
 import {colors, images} from '../constants';
+import {useNavigation} from '@react-navigation/native';
 
 function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
+  const navigation = useNavigation();
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
   const [enteredConfirmPassword, setEnteredConfirmPassword] = useState('');
@@ -63,6 +66,11 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
             style={styles.appLogo}
           />
           <Text style={styles.poweredTxt}>Powered by Ecobank Group</Text>
+          {!isLogin ? (
+            <Text style={styles.header}>Sign Up</Text>
+          ) : (
+            <Text style={styles.header}>Log In</Text>
+          )}
           <Input
             label="Email"
             placeholder="Enter your email address"
@@ -93,7 +101,8 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
             />
           )}
           {isLogin && (
-            <Pressable>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Forgot Password')}>
               <Text
                 style={{
                   color: colors.subGrey,
@@ -102,7 +111,7 @@ function AuthForm({isLogin, onSubmit, credentialsInvalid}) {
                 }}>
                 Forgot Password
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           )}
 
           <CustomButton title="SUBMIT" onPress={submitHandler} />
@@ -133,7 +142,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
     color: colors.blue,
     marginTop: 30,
-    marginBottom: 30,
+    marginBottom: 25,
   },
   signUpHeader: {
     fontSize: 25,

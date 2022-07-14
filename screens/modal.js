@@ -1,7 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
+import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {View, Text, Modal, StyleSheet, Image} from 'react-native';
+import {View, Text, Modal, StyleSheet, Image, Pressable} from 'react-native';
 import {images, colors} from '../constants';
 
 const ModalPopUp = ({visible, children}) => {
@@ -14,7 +15,7 @@ const ModalPopUp = ({visible, children}) => {
     if (visible) {
       setShowModal(true);
     } else {
-      setTimeout(() => setShowModal(false));
+      setTimeout(() => setShowModal(false), 200);
     }
   };
   return (
@@ -26,7 +27,7 @@ const ModalPopUp = ({visible, children}) => {
   );
 };
 
-const ModalO = ({navigation, imgSource, onPress = () => {}}) => {
+const ModalO = ({navigation}) => {
   const [visible, setVisible] = useState(true);
   const [page, setPage] = useState(0);
   const pageContent = [
@@ -73,6 +74,7 @@ const ModalO = ({navigation, imgSource, onPress = () => {}}) => {
         </View>
 
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          {/* <Pressable onPress={() => navigation.navigate('Welcome Screen')}> */}
           <Text
             style={{
               textAlign: 'left',
@@ -83,6 +85,7 @@ const ModalO = ({navigation, imgSource, onPress = () => {}}) => {
             }}>
             Go to Dashboard
           </Text>
+          {/* </Pressable> */}
           <View
             style={{
               flexDirection: 'row',

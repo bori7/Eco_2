@@ -21,80 +21,7 @@ import RadioGroup from 'react-native-radio-buttons-group';
 import {DropDown} from '../Components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const radioButtonsData = [
-  {
-    id: '1',
-    label: <Text style={{color: '#A0A0A0'}}>{'Male'}</Text>,
-    value: 'option1',
-    color: '#F7F7F7',
-    selected: false,
-  },
-  {
-    id: '2',
-    label: <Text style={{color: '#A0A0A0'}}>{'Female'}</Text>,
-    value: 'option2',
-    color: '#F7F7F7',
-    selected: false,
-  },
-];
-const maritalStatusData = [
-  {
-    id: '1',
-    label: <Text style={{color: '#A0A0A0'}}>{'Yes'}</Text>,
-    value: 'option1',
-    color: '#F7F7F7',
-    selected: false,
-  },
-  {
-    id: '2',
-    label: <Text style={{color: '#A0A0A0'}}>{'No'}</Text>,
-    value: 'option2',
-    color: '#F7F7F7',
-    selected: false,
-  },
-];
-let maritalStatus = [
-  {
-    id: 1,
-    name: 'Single',
-  },
-  {
-    id: 2,
-    name: 'Married',
-  },
-  {
-    id: 3,
-    name: 'Separated',
-  },
-  {
-    id: 4,
-    name: 'Widow (er)',
-  },
-  {
-    id: 5,
-    name: 'Divorced',
-  },
-];
-
-export function calculatePercentageDone(dataObject) {
-  const data = dataObject;
-  console.log('Data: ', data);
-  const keys = Object.keys(dataObject);
-  console.log('Keys: ', keys);
-  let vals = Object.values(data);
-  vals = vals.filter(val =>
-    val === '' || val === undefined || val === null ? false : true,
-  );
-
-  console.log('Vals: ', vals);
-  if (vals.length !== keys.length) {
-    return Math.round((vals.length / keys.length) * 100);
-  }
-
-  return 100;
-}
-
-const PersonalHistory = ({navigation}) => {
+const EmploymentRecords = ({navigation}) => {
   const [toggle, setToggle] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const onSelect = item => {
@@ -135,7 +62,6 @@ const PersonalHistory = ({navigation}) => {
   const [nationalityAtBirth, setNationalityAtBirth] = useState('');
   const [presentNationality, setPresentNationality] = useState('');
   const [describe, setDescribe] = useState('');
-  const [percentComplete, setPercentComplete] = useState(0);
 
   const [loading, setLoading] = useState(false);
 
@@ -360,7 +286,7 @@ const PersonalHistory = ({navigation}) => {
   );
 };
 
-export default PersonalHistory;
+export default DressCode;
 const styles = StyleSheet.create({
   SafeAreaViewContainer: {
     flex: 1,

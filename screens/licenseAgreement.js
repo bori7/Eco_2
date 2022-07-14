@@ -4,7 +4,7 @@ import {View, ScrollView, Text, StyleSheet} from 'react-native';
 import {colors} from '../constants';
 import {CustomButton} from '../Components';
 
-const LicenseAgreement = () => {
+const LicenseAgreement = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Ecobank Policy</Text>
@@ -92,7 +92,10 @@ const LicenseAgreement = () => {
         </Text>
       </ScrollView>
       <View style={styles.button}>
-        <CustomButton title="Yes I agree" />
+        <CustomButton
+          title="Yes I agree"
+          onPress={() => navigation.navigate('Welcome Screen')}
+        />
         <Text style={styles.noButton}>No, I disagree</Text>
       </View>
     </View>

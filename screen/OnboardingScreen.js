@@ -9,7 +9,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable quotes */
 
-import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useRef} from 'react';
 import {
   Animated,
@@ -24,21 +23,23 @@ import {colors, images} from '../constants';
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-const OnboardingScreen = () => {
+const OnboardingScreen = ({navigation}) => {
   const translation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.timing(translation, {
       toValue: 100,
-      duration: 5000,
+      duration: 1500,
       useNativeDriver: true,
     }).start();
-    // setTimeout(() =>
-    //   translation.stopAnimation(value => {
-    //     console.log('Final Value' + value);
-    //     navigation.navigate('Log In');
-    //   }),
-    // );
+    setTimeout(
+      () =>
+        translation.stopAnimation(value => {
+          console.log('Final Value' + value);
+          navigation?.navigate('GetStarted');
+        }),
+      1800,
+    );
   });
   return (
     <SafeAreaView style={styles.container}>

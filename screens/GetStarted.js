@@ -2,19 +2,23 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import {colors, images} from '../constants';
 
-const GetStarted = () => {
+const GetStarted = ({navigation}) => {
   return (
     <View>
       <View style={styles.container}>
         <View style={styles.menu}>
-          <Text>
-            <Icon name="menu" size={40} color="#4385B7" />
-          </Text>
-          {/* <Icon name="menu" size={40} color="#4385B7" /> */}
+          <Icon name="menu" size={40} color="#4385B7" />
           <Image source={images.profile_photo} />
         </View>
         <View style={{marginTop: 50, alignItems: 'center'}}>
@@ -28,11 +32,14 @@ const GetStarted = () => {
             This platform allows you to input your onboarding/post onboarding
             details thank you for choosing Ecobank
           </Text>
-          <TouchableOpacity style={{marginTop: 30}}>
-            <View style={styles.button}>
+
+          <View style={styles.button}>
+            <TouchableOpacity
+              sstyle={styles.button}
+              onPress={() => navigation.navigate('Log In')}>
               <Text style={styles.buttonText}>Get Started</Text>
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </View>
         </View>
         <Image
           source={images.mockup}
@@ -62,6 +69,7 @@ const styles = StyleSheet.create({
   menu: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 10,
   },
   welcome: {
     fontSize: 25,

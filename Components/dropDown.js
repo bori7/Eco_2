@@ -61,13 +61,14 @@ const styles = StyleSheet.create({
   },
   dropDown: {
     backgroundColor: '#F7F7F7',
-    padding: 8,
+    paddingRight: 8,
     borderRadius: 4,
     minHeight: 44,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     flexDirection: 'row',
     marginBottom: 6,
-    maxHeight: 100,
+    // maxHeight: 100,
+    alignItems: 'center',
   },
 });
 

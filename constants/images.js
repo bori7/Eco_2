@@ -13,6 +13,7 @@ const editedTeamUpSvg = require('../assets/images/editedTeamupSvg.png');
 const bottom3 = require('../assets/images/Bottomtransition/bottom3.png');
 const Person = require('../assets/images/Personal.png');
 const eco_Logo = require('../assets/images/EcobankLogo.png');
+const dressCode = require('../assets/images/dresscode.jpeg');
 
 export default {
   logo,
@@ -29,4 +30,5 @@ export default {
   bottom3,
   Person,
   eco_Logo,
+  dressCode,
 };
